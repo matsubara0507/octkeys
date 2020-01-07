@@ -23,12 +23,14 @@ main = withGetOpt' "[options] [input-file]" opts $ \r args usage -> do
     opts = #help    @= helpOpt
         <: #version @= versionOpt
         <: #verbose @= verboseOpt
+        <: #dotssh  @= dotsshOpt
         <: nil
 
 type Options = Record
   '[ "help"    >: Bool
    , "version" >: Bool
    , "verbose" >: Bool
+   , "dotssh"  >: FilePath
    ]
 
 helpOpt :: OptDescr' Bool
@@ -40,11 +42,18 @@ versionOpt = optFlag [] ["version"] "Show version"
 verboseOpt :: OptDescr' Bool
 verboseOpt = optFlag ['v'] ["verbose"] "Enable verbose mode: verbosity level \"debug\""
 
+dotsshOpt :: OptDescr' FilePath
+dotsshOpt =
+  fromMaybe "~/.ssh" <$> optLastArg ['F'] ["dotssh"] "PATH" "ssh config directory path instead of ~/.ssh"
+
 runCmd :: Options -> Maybe FilePath -> IO ()
-runCmd opts _path = Mix.run plugin cmd
+runCmd opts path = do
+  config <- readConfig (fromMaybe ".octkeys.yaml" path)
+  let plugin = hsequence
+             $ #logger <@=> MixLogger.buildPlugin logOpts
+            <: #dotssh <@=> pure (opts ^. #dotssh)
+            <: #keys   <@=> pure config
+            <: nil
+  Mix.run plugin cmd
   where
-    plugin :: Mix.Plugin () IO Env
-    plugin = hsequence
-        $ #logger <@=> MixLogger.buildPlugin logOpts
-       <: nil
     logOpts = #handle @= stdout <: #verbose @= (opts ^. #verbose) <: nil

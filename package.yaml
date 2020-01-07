@@ -18,6 +18,7 @@ ghc-options:
 - -Wincomplete-record-updates
 - -Wincomplete-uni-patterns
 - -Wredundant-constraints
+- -optP-Wno-nonportable-include-path
 
 default-extensions:
 - NoImplicitPrelude
@@ -42,8 +43,13 @@ default-extensions:
 dependencies:
 - base >= 4.7 && < 5
 - rio >= 0.1.1.0
+- cryptonite
 - extensible >= 0.6
+- fallible
+- memory
 - mix
+- req
+- yaml
 
 library:
   source-dirs: src
