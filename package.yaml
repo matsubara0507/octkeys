@@ -70,4 +70,3 @@ tests:
     - octkeys
     - tasty
     - tasty-hspec
-    other-modules: []

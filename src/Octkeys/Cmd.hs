@@ -23,7 +23,7 @@ cmd = do
   writeAuthorizedKeys keys
 
 collectKeys :: AccountName -> FingerPrint -> RIO Env (Maybe Key)
-collectKeys name allow = tryIO (GitHub.fetchKeys name) >>= \case
+collectKeys name allow = tryAny (GitHub.fetchKeys name) >>= \case
   Left err ->
     Mix.logError (buildErrMessage err) >> pure Nothing
   Right keys ->
