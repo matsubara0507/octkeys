@@ -1,6 +1,10 @@
 # octkeys
 
+Manage ssh authorized keys by GitHub Account
+
 ## Requirement
+
+Haskell Stack or Docker
 
 ## Usage
 
