@@ -4,7 +4,24 @@
 
 ## Usage
 
+write config YAML file (ref. [example/.octkeys.yaml](example/.octkeys.yaml)).
+
+```
+$ octkeys --help
+octkeys [options] [input-file]
+  -h       --help         Show this help text
+           --version      Show version
+  -v       --verbose      Enable verbose mode: verbosity level "debug"
+  -F PATH  --dotssh=PATH  ssh config directory path instead of ~/.ssh
+
+$ octkeys -F example/.ssh example/.octkeys.yaml
+```
+
 ## Build
+
+```
+$ stack build
+```
 
 ### Docker
 

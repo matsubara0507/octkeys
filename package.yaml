@@ -45,7 +45,6 @@ dependencies:
 - rio >= 0.1.1.0
 - cryptonite
 - extensible >= 0.6
-- fallible
 - memory
 - mix
 - req

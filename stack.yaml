@@ -8,8 +8,6 @@ extra-deps:
   commit: 4978a33dec736799b30c14e215f7fa0f29fa2884
   subdirs:
   - mix
-- github: matsubara0507/fallible
-  commit: dfbdce1a0b0c71bcfcea844c94f9cb815f071235
 
 docker:
   repo: matsubara0507/stack-build
