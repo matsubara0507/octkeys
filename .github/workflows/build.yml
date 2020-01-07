@@ -70,14 +70,14 @@ jobs:
       if: github.ref == 'refs/heads/master'
       run: |
         echo ${{ secrets.GITHUB_TOKEN }} | docker login docker.pkg.github.com -u matsubara0507 --password-stdin
-        docker tag octkeys docker.pkg.github.com/matsubara0507/octkeys/cli
-        docker push docker.pkg.github.com/matsubara0507/octkeys/cli:latest
+        docker tag octkeys docker.pkg.github.com/matsubara0507/pkg/octkeys
+        docker push docker.pkg.github.com/matsubara0507/pkg/octkeys:latest
     - name: Push Docker Image (tag)
       if: startsWith(github.ref, 'refs/tags/')
       run: |
         echo ${{ secrets.GITHUB_TOKEN }} | docker login docker.pkg.github.com -u matsubara0507 --password-stdin
-        docker tag octkeys docker.pkg.github.com/matsubara0507/octkeys/cli:${GITHUB_REF#refs/tags/}
-        docker push docker.pkg.github.com/matsubara0507/octkeys/cli:${GITHUB_REF#refs/tags/}
+        docker tag octkeys docker.pkg.github.com/matsubara0507/pkg/octkeys:${GITHUB_REF#refs/tags/}
+        docker push docker.pkg.github.com/matsubara0507/pkg/octkeys:${GITHUB_REF#refs/tags/}
     - name: Display .stack size
       run: |
         du -sh ~/.stack/*
