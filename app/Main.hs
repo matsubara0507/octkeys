@@ -2,6 +2,7 @@ module Main where
 
 import           Paths_octkeys          (version)
 import           RIO
+import           RIO.Directory          (getHomeDirectory)
 
 import           Configuration.Dotenv   (defaultConfig, loadFile)
 import           Data.Extensible
@@ -30,7 +31,7 @@ type Options = Record
   '[ "help"    >: Bool
    , "version" >: Bool
    , "verbose" >: Bool
-   , "dotssh"  >: FilePath
+   , "dotssh"  >: (Maybe FilePath)
    ]
 
 helpOpt :: OptDescr' Bool
@@ -42,18 +43,22 @@ versionOpt = optFlag [] ["version"] "Show version"
 verboseOpt :: OptDescr' Bool
 verboseOpt = optFlag ['v'] ["verbose"] "Enable verbose mode: verbosity level \"debug\""
 
-dotsshOpt :: OptDescr' FilePath
-dotsshOpt =
-  fromMaybe "~/.ssh" <$> optLastArg ['F'] ["dotssh"] "PATH" "ssh config directory path instead of ~/.ssh"
+dotsshOpt :: OptDescr' (Maybe FilePath)
+dotsshOpt = optLastArg ['F'] ["dotssh"] "PATH" "ssh config directory path instead of ~/.ssh"
 
 runCmd :: Options -> Maybe FilePath -> IO ()
 runCmd opts path = do
   config <- readConfig (fromMaybe ".octkeys.yaml" path)
+  dotssh <- dotsshDirectory (opts ^. #dotssh)
   let plugin = hsequence
              $ #logger <@=> MixLogger.buildPlugin logOpts
-            <: #dotssh <@=> pure (opts ^. #dotssh)
+            <: #dotssh <@=> pure dotssh
             <: #keys   <@=> pure config
             <: nil
   Mix.run plugin cmd
   where
     logOpts = #handle @= stdout <: #verbose @= (opts ^. #verbose) <: nil
+
+dotsshDirectory :: MonadIO m => Maybe FilePath -> m FilePath
+dotsshDirectory (Just path) = pure path
+dotsshDirectory Nothing     = (<> "/.ssh") <$> getHomeDirectory
