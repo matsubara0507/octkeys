@@ -14,13 +14,15 @@ type Key = ByteString
 
 cmd :: RIO Env ()
 cmd = do
+  Mix.logDebug "start: build authorized_keys"
   keyConfig <- asks (view #github . view #keys)
   keys <- forMaybeM (Map.toList keyConfig) $ \(name, allow) -> do
     key <- collectKeys name allow
     when (isNothing key) $
       Mix.logWarn ("not find key: " <> display name)
     pure key
-  writeAuthorizedKeys keys
+  path <- writeAuthorizedKeys keys
+  Mix.logInfo $ "finish: write " <> fromString path
 
 collectKeys :: AccountName -> FingerPrint -> RIO Env (Maybe Key)
 collectKeys name allow = tryAny (GitHub.fetchKeys name) >>= \case
@@ -38,11 +40,12 @@ findAllowKey allow keys =
   where
     allow' = Just $ filter (/= ':') allow
 
-writeAuthorizedKeys :: [Key] -> RIO Env ()
+writeAuthorizedKeys :: [Key] -> RIO Env FilePath
 writeAuthorizedKeys keys = do
   defaultKeys <- asks (view #default . view #keys)
   path <- (<> "/authorized_keys") <$> asks (view #dotssh)
   B.writeFile path (buildAuthorizedKeys defaultKeys keys)
+  pure path
 
 buildAuthorizedKeys :: [String] -> [Key] -> ByteString
 buildAuthorizedKeys defaultKeys keys =

@@ -17,8 +17,10 @@ octkeys [options] [input-file]
            --version      Show version
   -v       --verbose      Enable verbose mode: verbosity level "debug"
   -F PATH  --dotssh=PATH  ssh config directory path instead of ~/.ssh
+           --watch        Enable watch mode
 
 $ octkeys -F example/.ssh example/.octkeys.yaml
+finish: write example/.ssh/authorized_keys
 ```
 
 ## Build
