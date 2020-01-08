@@ -15,7 +15,7 @@ fingerprint content = do
 
 pubkeyBody :: ByteString -> Maybe ByteString
 pubkeyBody content =
-  case B.split (B.index " " 0) content of
+  case B.split 32 content of
     [header, body] | header == "ssh-rsa" && "AAAA" `B.isPrefixOf` body ->
         Just body
     _ ->
