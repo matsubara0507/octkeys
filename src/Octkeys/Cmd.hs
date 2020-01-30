@@ -29,7 +29,7 @@ collectKeys name allow = tryAny (GitHub.fetchKeys name) >>= \case
   Left err ->
     Mix.logError (buildErrMessage err) >> pure Nothing
   Right keys ->
-    pure $ findAllowKey allow (fmap (fromString . view #key) keys)
+    pure $ findAllowKey allow keys
   where
     buildErrMessage e =
       mconcat [ "cannot fetch ", display name, " keys: ", displayShow e ]
