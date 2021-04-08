@@ -22,24 +22,24 @@ sha256 = fmap (filter (/= '=') . T.unpack . textDisplay . displayBytesUtf8 . enc
 
 fingerprint :: HashAlgorithm a => ByteString -> Maybe (Digest a)
 fingerprint content = do
-  body <- pubkeyBody content
-  bin  <- decode body
+  (prefix, body) <- pubkeyBody content
+  bin <- decode prefix body
   pure $ Crypto.hash bin
 
-pubkeyBody :: ByteString -> Maybe ByteString
+pubkeyBody :: ByteString -> Maybe (ByteString, ByteString)
 pubkeyBody content =
   case B.split 32 content of
-    [header, body] | header == "ssh-rsa" && "AAAA" `B.isPrefixOf` body ->
-        Just body
+    ["ssh-rsa", body] | "AAAA" `B.isPrefixOf` body ->
+        Just ("\NUL\NUL\NUL\assh-rsa", body)
+    ["ssh-ed25519", body] | "AAAA" `B.isPrefixOf` body ->
+        Just ("\NUL\NUL\NUL\vssh-ed25519", body)
     _ ->
         Nothing
 
-decode :: ByteString -> Maybe ByteString
-decode body =
+decode :: ByteString -> ByteString -> Maybe ByteString
+decode prefix body =
   case convertFromBase Base64 body of
     Right bin | prefix `B.isPrefixOf` bin ->
         Just bin
     _ ->
         Nothing
-  where
-    prefix = "\NUL\NUL\NUL\assh-rsa"
