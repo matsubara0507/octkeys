@@ -35,10 +35,14 @@ collectKeys name allow = tryAny (GitHub.fetchKeys name) >>= \case
       mconcat [ "cannot fetch ", display name, " keys: ", displayShow e ]
 
 findAllowKey :: FingerPrint -> [Key] -> Maybe Key
-findAllowKey allow keys =
-  L.find (\key -> fmap show (SSHKey.fingerprint key) == allow') keys
-  where
-    allow' = Just $ filter (/= ':') allow
+findAllowKey allow =
+  if "SHA256:" `L.isPrefixOf` allow then
+    let allow' = Just $ L.drop 7 allow in
+    L.find $ \key -> SSHKey.sha256 key == allow'
+  else
+    let allow' = Just $ filter (/= ':') allow in
+    L.find $ \key -> SSHKey.md5 key == allow'
+
 
 writeAuthorizedKeys :: [Key] -> RIO Env FilePath
 writeAuthorizedKeys keys = do
