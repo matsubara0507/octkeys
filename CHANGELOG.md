@@ -2,6 +2,8 @@
 
 ## Unreleased changes
 
+## 1.0.0
+
 - Feat: add watch config file option `--watch`
 - Modify: use `github.com/[user].keys` instead of GitHub API
 - Misc: update LTS to 14.22
