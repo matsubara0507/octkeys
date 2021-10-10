@@ -10,10 +10,10 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-20.04
     strategy:
       matrix:
-        ghc: ["8.10.4"]
+        ghc: ["8.10.7"]
 
     steps:
     - uses: actions/checkout@v2
@@ -30,7 +30,7 @@ jobs:
         "
         restore-keys: |
           ${{ runner.os }}-stack-
-    - uses: haskell/actions/setup@v1.2.1
+    - uses: haskell/actions/setup@v1.2.6
       name: Setup Haskell
       with:
         ghc-version: ${{ matrix.ghc }}
