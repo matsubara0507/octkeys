@@ -12,7 +12,7 @@ import           Data.ByteArray.Encoding (Base (Base64), convertFromBase,
                                           convertToBase)
 
 md5 :: ByteString -> Maybe String
-md5 = fmap show . (fingerprint @ MD5)
+md5 = fmap show . (fingerprint @MD5)
 
 sha256 :: ByteString -> Maybe String
 sha256 = fmap (filter (/= '=') . T.unpack . textDisplay . displayBytesUtf8 . encode) . fingerprint

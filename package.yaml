@@ -69,5 +69,6 @@ tests:
     source-dirs: test
     dependencies:
     - octkeys
+    - hspec
     - tasty
     - tasty-hspec
