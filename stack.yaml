@@ -1,12 +1,12 @@
-resolver: lts-18.13
+resolver: lts-19.5
 packages:
 - '.'
 extra-deps:
-- extensible-0.8.2
+- extensible-0.8.3
 - incremental-0.3.1
-- membership-0
+- membership-0.0.1
 - github: matsubara0507/mix.hs
-  commit: 75714be080db16f6a4f9d0a22e86947ffcdadc57
+  commit: 9bcd386526fe10a025a23e951c2de86b05129b17
   subdirs:
   - mix
 

@@ -4,7 +4,7 @@ import           RIO
 import qualified RIO.ByteString   as B
 
 import qualified Octkeys.SSH.Key  as SSHKey
-import           Test.Tasty.Hspec
+import           Test.Hspec
 
 spec :: Spec
 spec = do

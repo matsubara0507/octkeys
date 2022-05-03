@@ -3,6 +3,7 @@ module Spec.Octkeys.GitHub.User (spec) where
 import           RIO
 
 import qualified Octkeys.GitHub.User as GitHub
+import           Test.Hspec
 import           Test.Tasty.Hspec
 
 spec :: Spec
