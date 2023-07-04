@@ -1,8 +1,8 @@
-resolver: lts-19.5
+resolver: lts-21.1
 packages:
 - '.'
 extra-deps:
-- extensible-0.8.3
+- extensible-0.9
 - incremental-0.3.1
 - membership-0.0.1
 - github: matsubara0507/mix.hs
@@ -11,5 +11,5 @@ extra-deps:
   - mix
 
 docker:
-  repo: ghcr.io/matsubara0507/stack-build:18.04
+  repo: ghcr.io/matsubara0507/stack-build:22.04
   enable: false
