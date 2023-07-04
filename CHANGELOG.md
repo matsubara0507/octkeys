@@ -2,6 +2,12 @@
 
 ## Unreleased changes
 
+## 1.1.0
+
+- Misc: update GHC to 9.4.5
+- Misc: fix docker image configs
+- CI: update runner OS and GitHub Actions
+
 ## 1.0.0
 
 - Feat: add watch config file option `--watch`
